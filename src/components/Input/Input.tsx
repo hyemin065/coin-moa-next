@@ -29,18 +29,20 @@ const ErrorMessage = styled.span``;
 
 type Props = {
   id: string;
+  type?: string;
+  value: string;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
-  errorMessage: string;
+  errorMessage?: string;
 };
 
-const Input = ({ id, onChange, placeholder, errorMessage }: Props) => {
+const Input = ({ id, type = 'text', value, onChange, placeholder, errorMessage }: Props) => {
   return (
     <FormGroup>
       <Label htmlFor={id}>{id}</Label>
       <InputWrap>
-        <StyledInput type='text' id={id} placeholder={placeholder} onChange={onChange} />
-        <ErrorMessage>{errorMessage}</ErrorMessage>
+        <StyledInput type={type} id={id} placeholder={placeholder} value={value} onChange={onChange} />
+        {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
       </InputWrap>
     </FormGroup>
   );
