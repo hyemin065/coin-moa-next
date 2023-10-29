@@ -1,0 +1,28 @@
+import connectMongoDB from '@/libs/mongodb';
+import User from '@/models/user';
+import { NextResponse } from 'next/server';
+import bcrypt from 'bcrypt';
+
+export async function POST(request: Request) {
+  const { id, password } = await request.json();
+
+  await connectMongoDB();
+
+  bcrypt.genSalt(10, function (err, salt) {
+    if (err) return err;
+    bcrypt.hash(password, salt, async function (err, hash) {
+      if (err) return err;
+      await User.create({ id, password: hash });
+    });
+  });
+
+  return NextResponse.json({ message: 'success' }, { status: 201 });
+}
+
+export async function DELETE(request: any) {
+  const id = request.nextUrl.searchParams.get('id');
+  await connectMongoDB();
+  await User.findByIdAndDelete(id);
+  return NextResponse.json({ messgae: 'deleted' }, { status: 201 });
+}
+``;
